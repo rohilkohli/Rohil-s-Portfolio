@@ -47,11 +47,13 @@ export const ScannerCardStream = ({
   const [isScanning, setIsScanning] = useState(false);
 
   const cards = useMemo(() => {
+    if (!cardImages?.length) return [];
     const totalCards = cardImages.length * repeat;
+    const baseAsciis = cardImages.map(() => generateCode(Math.floor(400 / 6.5), Math.floor(250 / 13)));
     return Array.from({ length: totalCards }, (_, i) => ({
       id: i,
       image: cardImages[i % cardImages.length],
-      ascii: generateCode(Math.floor(400 / 6.5), Math.floor(250 / 13)),
+      ascii: baseAsciis[i % cardImages.length],
     }));
   }, [cardImages, repeat]);
 
@@ -79,7 +81,7 @@ export const ScannerCardStream = ({
 
   const resetPosition = useCallback(() => {
     if (cardLineRef.current) {
-      cardStreamState.current.position = cardLineRef.current.parentElement?.offsetWidth ?? 0;
+      cardStreamState.current.position = 0;
       cardStreamState.current.velocity = initialSpeed;
       cardStreamState.current.direction = direction;
       setIsPaused(false);
@@ -253,7 +255,8 @@ export const ScannerCardStream = ({
 
     // ── Card clip / reveal update ─────────────────────────────────────────────
     const updateCardEffects = () => {
-      const scannerX = containerW / 2;
+      const containerRect = container.getBoundingClientRect();
+      const scannerX = containerRect.left + containerW / 2;
       const scannerWidth = 8;
       const scannerLeft = scannerX - scannerWidth / 2;
       const scannerRight = scannerX + scannerWidth / 2;
@@ -347,10 +350,12 @@ export const ScannerCardStream = ({
         setSpeed(Math.round(cardStreamState.current.velocity));
       }
 
-      const { position, cardLineWidth } = cardStreamState.current;
-      const containerWidth = cardLine.parentElement?.offsetWidth ?? 0;
-      if (position < -cardLineWidth) cardStreamState.current.position = containerWidth;
-      else if (position > containerWidth) cardStreamState.current.position = -cardLineWidth;
+      const baseWidth = (cardImages?.length || 0) * (400 + cardGap);
+      if (baseWidth > 0) {
+        let newPos = cardStreamState.current.position % baseWidth;
+        if (newPos > 0) newPos -= baseWidth;
+        cardStreamState.current.position = newPos;
+      }
       cardLine.style.transform = `translateX(${cardStreamState.current.position}px)`;
 
       updateCardEffects();
