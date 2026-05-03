@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
 import { TextEffect } from './ui/text-effect';
-import { HoverBorderGradient } from './ui/hover-border-gradient';
 import type { LucideIcon } from 'lucide-react';
 
 export const SectionHeader = ({ title, subtitle, icon: Icon }: { title: string, subtitle?: string, icon: LucideIcon }) => (
@@ -27,23 +26,19 @@ export const SectionHeader = ({ title, subtitle, icon: Icon }: { title: string, 
 );
 
 export const SystemPanel = ({ children, className, title }: { children: React.ReactNode, className?: string, title?: string }) => (
-  <HoverBorderGradient
-    as="div"
-    containerClassName="w-full h-full rounded-sm"
-    className={cn(
-      "relative bg-cyber-gray-900/40 backdrop-blur-md p-6 md:p-8 rounded-sm overflow-hidden",
-      "before:absolute before:top-0 before:left-0 before:w-1 before:h-4 before:bg-neon-cyan",
-      "after:absolute after:bottom-0 after:right-0 after:w-4 after:h-[1px] after:bg-neon-cyan",
-      className
-    )}
-  >
+  <div className={cn(
+    "relative bg-cyber-gray-900/40 backdrop-blur-md border border-white/5 p-6 md:p-8 rounded-sm overflow-hidden",
+    "before:absolute before:top-0 before:left-0 before:w-1 before:h-4 before:bg-neon-cyan",
+    "after:absolute after:bottom-0 after:right-0 after:w-4 after:h-[1px] after:bg-neon-cyan",
+    className
+  )}>
     {title && (
       <div className="absolute top-0 right-0 px-3 py-1 font-mono text-[9px] text-neon-cyan/50 uppercase border-l border-b border-white/5">
         SYS_{title}
       </div>
     )}
     {children}
-  </HoverBorderGradient>
+  </div>
 );
 
 export const NeonButton = ({ 
