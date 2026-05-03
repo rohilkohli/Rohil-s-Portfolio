@@ -58,7 +58,7 @@ export const ExperienceModule = () => {
                 <div className="w-1 h-1 bg-neon-cyan animate-pulse" />
                 <span>LINK_STABLE: 911.23ms</span>
               </div>
-              <div>COORD: 34.0522° N, 118.2437° W</div>
+              <div>COORD: 28.6139° N, 77.2090° E</div>
             </div>
 
             <div className="absolute bottom-4 left-4 z-10 text-left">

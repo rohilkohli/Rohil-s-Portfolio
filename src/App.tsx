@@ -20,19 +20,25 @@ import { ScrollReveal } from './components/Common/ScrollReveal';
 import { ChevronUp, User, Cpu, Server, Award, BookOpen, Globe, ShieldCheck, Terminal } from 'lucide-react';
 import { cn } from './lib/utils';
 
+const BOOT_SESSION_KEY = 'system_log_booted';
+
 export default function App() {
-  const [booting, setBooting] = useState(true);
+  const [booting, setBooting] = useState(() => {
+    // Skip boot animation if the user has already seen it this session
+    return !sessionStorage.getItem(BOOT_SESSION_KEY);
+  });
   const [entered, setEntered] = useState(false);
   const [activeModule, setActiveModule] = useState('HERO');
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const handleBootComplete = () => {
+    sessionStorage.setItem(BOOT_SESSION_KEY, '1');
     setBooting(false);
   };
 
   const handleEnterSystem = () => {
     setEntered(true);
     setActiveModule('PROFILE');
-    // Scroll to profile smoothly
     const element = document.getElementById('profile');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -52,11 +58,12 @@ export default function App() {
           }
         }
       }
-      
-      // Hero check
+
       if (window.scrollY < 300) {
         setActiveModule('HERO');
       }
+
+      setShowScrollTop(window.scrollY > 500);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -76,7 +83,7 @@ export default function App() {
         <SystemShell activeModule={activeModule}>
           <div className="relative">
             <HeroModule onEnter={handleEnterSystem} />
-            
+
             <AnimatePresence>
               {(entered || window.scrollY > 100) && (
                 <motion.div
@@ -88,19 +95,19 @@ export default function App() {
                   <ScrollReveal direction="up" delay={0.2}>
                     <ProfileModule />
                   </ScrollReveal>
-                  
+
                   <ScrollReveal direction="left" delay={0.1}>
                     <SkillsModule />
                   </ScrollReveal>
-                  
+
                   <ScrollReveal direction="right" delay={0.1}>
                     <ExperienceModule />
                   </ScrollReveal>
-                  
+
                   <ScrollReveal direction="up" delay={0.1}>
                     <EducationModule />
                   </ScrollReveal>
-                  
+
                   <ScrollReveal direction="left" delay={0.1}>
                     <AchievementsModule />
                   </ScrollReveal>
@@ -112,11 +119,11 @@ export default function App() {
                   <ScrollReveal direction="left" delay={0.1}>
                     <CertificationsModule />
                   </ScrollReveal>
-                  
+
                   <ScrollReveal direction="left" delay={0.1}>
                     <TransmissionModule />
                   </ScrollReveal>
-                  
+
                   {/* Persistent Side Navigation */}
                   <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-6">
                     {[
@@ -127,12 +134,13 @@ export default function App() {
                       { id: 'achievements', icon: Award, label: 'ACHV' },
                       { id: 'projects', icon: Terminal, label: 'PROJ' },
                       { id: 'certifications', icon: ShieldCheck, label: 'CERT' },
-                      { id: 'contact', icon: Globe, label: 'TRNS' }
+                      { id: 'contact', icon: Globe, label: 'TRNS' },
                     ].map((item) => (
                       <button
                         key={item.id}
                         onClick={() => document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' })}
-                        className="group flex items-center justify-end gap-3"
+                        aria-label={`Navigate to ${item.label} section`}
+                        className="group flex items-center justify-end gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-neon-cyan"
                       >
                         <span className={cn(
                           "font-mono text-[9px] tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-300",
@@ -142,8 +150,8 @@ export default function App() {
                         </span>
                         <div className={cn(
                           "w-3 h-3 border rotate-45 transition-all duration-300",
-                          activeModule === item.id.toUpperCase() 
-                            ? "bg-neon-cyan border-neon-cyan scale-125 shadow-[0_0_10px_rgba(0,243,255,0.5)]" 
+                          activeModule === item.id.toUpperCase()
+                            ? "bg-neon-cyan border-neon-cyan scale-125 shadow-[0_0_10px_rgba(0,243,255,0.5)]"
                             : "border-white/20 group-hover:border-neon-cyan/50"
                         )} />
                       </button>
@@ -153,9 +161,10 @@ export default function App() {
                   {/* Scroll to Top */}
                   <motion.button
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: window.scrollY > 500 ? 1 : 0 }}
+                    animate={{ opacity: showScrollTop ? 1 : 0 }}
+                    aria-label="Scroll to top"
                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    className="fixed bottom-12 right-8 w-10 h-10 bg-cyber-gray-900 border border-neon-cyan/20 flex items-center justify-center text-neon-cyan z-50 hover:bg-neon-cyan/10 transition-colors"
+                    className="fixed bottom-12 right-8 w-10 h-10 bg-cyber-gray-900 border border-neon-cyan/20 flex items-center justify-center text-neon-cyan z-50 hover:bg-neon-cyan/10 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-neon-cyan"
                   >
                     <ChevronUp size={20} />
                   </motion.button>
