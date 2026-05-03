@@ -1,19 +1,45 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
 import { Globe, Linkedin, Github, Mail, MapPin } from 'lucide-react';
 import { SystemPanel, SectionHeader } from '../Common';
 import { SlideButton } from '../ui/slide-button';
 import { SpecialText } from '../ui/special-text';
 
+interface FormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
+interface FormErrors {
+  name?: string;
+  email?: string;
+  message?: string;
+}
+
 export const TransmissionModule = () => {
   const [isEmailHovered, setIsEmailHovered] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const email = "rohilkohli.buisness@gmail.com";
+  const [formData, setFormData] = useState<FormData>({ name: '', email: '', message: '' });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const contactEmail = "rohilkohli.business@gmail.com";
+
+  const validate = (): boolean => {
+    const next: FormErrors = {};
+    if (!formData.name.trim()) next.name = 'NAME_REQUIRED';
+    if (!formData.email.trim()) {
+      next.email = 'EMAIL_REQUIRED';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      next.email = 'INVALID_FORMAT';
+    }
+    if (!formData.message.trim()) next.message = 'MESSAGE_REQUIRED';
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
 
   const handleSlideComplete = () => {
+    if (!validate()) return;
     const subject = encodeURIComponent(`Transmission from ${formData.name}`);
     const body = encodeURIComponent(`Origin Entity: ${formData.name}\nSecure Freq Link: ${formData.email}\n\nMission Details:\n${formData.message}`);
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -25,13 +51,14 @@ export const TransmissionModule = () => {
           <p className="text-xl text-slate-400 font-mono italic leading-relaxed">
             "SYSTEM ACTIVE AND READY FOR NEXT DEPLOYMENT. ENCRYPTION PROTOCOLS STANDING BY."
           </p>
-          
+
           <div className="space-y-4">
-            <div 
-              className="flex items-center gap-4 group cursor-pointer" 
-              onClick={() => window.location.href = `mailto:${email}`}
+            <a
+              href={`mailto:${contactEmail}`}
+              className="flex items-center gap-4 group"
               onMouseEnter={() => setIsEmailHovered(true)}
               onMouseLeave={() => setIsEmailHovered(false)}
+              aria-label={`Send email to ${contactEmail}`}
             >
               <div className="w-12 h-12 rounded-sm bg-cyber-gray-900 border border-white/5 flex items-center justify-center group-hover:border-neon-cyan transition-colors">
                 <Mail className="text-slate-500 group-hover:text-neon-cyan transition-colors" />
@@ -40,15 +67,21 @@ export const TransmissionModule = () => {
                 <div className="font-mono text-[10px] text-slate-500 uppercase">Comm_Link_01</div>
                 <div className="text-white font-bold group-hover:text-neon-cyan transition-colors truncate max-w-[200px] sm:max-w-none min-h-[1.25rem] flex items-center">
                   {isEmailHovered ? (
-                    <SpecialText speed={15}>{email}</SpecialText>
+                    <SpecialText speed={15}>{contactEmail}</SpecialText>
                   ) : (
                     <span className="opacity-40">REVEAL_SECURE_CHANNEL</span>
                   )}
                 </div>
               </div>
-            </div>
+            </a>
 
-            <div className="flex items-center gap-4 group cursor-pointer" onClick={() => window.open('https://www.linkedin.com/in/rohil-kohli-041022236/', '_blank')}>
+            <a
+              href="https://www.linkedin.com/in/rohil-kohli-041022236/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 group"
+              aria-label="LinkedIn profile"
+            >
               <div className="w-12 h-12 rounded-sm bg-cyber-gray-900 border border-white/5 flex items-center justify-center group-hover:border-neon-purple transition-colors">
                 <Linkedin className="text-slate-500 group-hover:text-neon-purple transition-colors" />
               </div>
@@ -56,9 +89,15 @@ export const TransmissionModule = () => {
                 <div className="font-mono text-[10px] text-slate-500 uppercase">Comm_Link_02</div>
                 <div className="text-white font-bold group-hover:text-neon-purple transition-colors truncate max-w-[200px]">rohil-kohli-041022236</div>
               </div>
-            </div>
+            </a>
 
-            <div className="flex items-center gap-4 group cursor-pointer" onClick={() => window.open('https://github.com/rohilkohli', '_blank')}>
+            <a
+              href="https://github.com/rohilkohli"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 group"
+              aria-label="GitHub profile"
+            >
               <div className="w-12 h-12 rounded-sm bg-cyber-gray-900 border border-white/5 flex items-center justify-center group-hover:border-white transition-colors">
                 <Github className="text-slate-500 group-hover:text-white transition-colors" />
               </div>
@@ -66,10 +105,10 @@ export const TransmissionModule = () => {
                 <div className="font-mono text-[10px] text-slate-500 uppercase">Comm_Link_03</div>
                 <div className="text-white font-bold group-hover:text-white transition-colors truncate max-w-[200px]">rohilkohli</div>
               </div>
-            </div>
+            </a>
 
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-sm bg-cyber-gray-900 border border-white/5 flex items-center justify-center border-neon-cyan/20">
+              <div className="w-12 h-12 rounded-sm bg-cyber-gray-900 border border-neon-cyan/20 flex items-center justify-center">
                 <MapPin className="text-neon-cyan animate-pulse" />
               </div>
               <div>
@@ -93,43 +132,58 @@ export const TransmissionModule = () => {
           <SystemPanel title="TRANSMISSION_FORM" className="relative h-full bg-cyber-gray-900/60">
             <div className="space-y-6">
               <div className="space-y-2">
-                <label className="font-mono text-[9px] text-slate-500 uppercase tracking-widest pl-1">Origin_Entity_ID</label>
-                <input 
-                  type="text" 
+                <label htmlFor="tx-name" className="font-mono text-[9px] text-slate-500 uppercase tracking-widest pl-1">Origin_Entity_ID</label>
+                <input
+                  id="tx-name"
+                  type="text"
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   placeholder="NAME / CORPORATE_IDENTITY"
+                  aria-describedby={errors.name ? 'tx-name-error' : undefined}
                   className="w-full bg-cyber-black/50 border border-white/5 px-4 py-3 text-white text-sm font-mono focus:border-neon-cyan outline-none transition-all placeholder:opacity-30"
                 />
+                {errors.name && (
+                  <p id="tx-name-error" role="alert" className="font-mono text-[9px] text-red-500 pl-1">{errors.name}</p>
+                )}
               </div>
 
               <div className="space-y-2">
-                <label className="font-mono text-[9px] text-slate-500 uppercase tracking-widest pl-1">Secure_Freq_Link</label>
-                <input 
-                  type="email" 
+                <label htmlFor="tx-email" className="font-mono text-[9px] text-slate-500 uppercase tracking-widest pl-1">Secure_Freq_Link</label>
+                <input
+                  id="tx-email"
+                  type="email"
                   value={formData.email}
                   onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   placeholder="EMAIL_ADDRESS"
+                  aria-describedby={errors.email ? 'tx-email-error' : undefined}
                   className="w-full bg-cyber-black/50 border border-white/5 px-4 py-3 text-white text-sm font-mono focus:border-neon-cyan outline-none transition-all placeholder:opacity-30"
                 />
+                {errors.email && (
+                  <p id="tx-email-error" role="alert" className="font-mono text-[9px] text-red-500 pl-1">{errors.email}</p>
+                )}
               </div>
 
               <div className="space-y-2">
-                <label className="font-mono text-[9px] text-slate-500 uppercase tracking-widest pl-1">Mission_Details</label>
-                <textarea 
+                <label htmlFor="tx-message" className="font-mono text-[9px] text-slate-500 uppercase tracking-widest pl-1">Mission_Details</label>
+                <textarea
+                  id="tx-message"
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
                   placeholder="MESSAGE_CONTENT_HERE..."
+                  aria-describedby={errors.message ? 'tx-message-error' : undefined}
                   className="w-full bg-cyber-black/50 border border-white/5 px-4 py-3 text-white text-sm font-mono focus:border-neon-cyan outline-none transition-all placeholder:opacity-30 resize-none"
                 />
+                {errors.message && (
+                  <p id="tx-message-error" role="alert" className="font-mono text-[9px] text-red-500 pl-1">{errors.message}</p>
+                )}
               </div>
 
               <div className="flex justify-center pt-2">
                 <SlideButton onSlide={handleSlideComplete} className="w-full" />
               </div>
             </div>
-            
+
             <div className="mt-8 flex justify-between items-center opacity-30 pointer-events-none">
               <div className="w-16 h-px bg-white/20" />
               <div className="font-mono text-[8px]">E2E_ENCRYPTION_ACTIVE</div>

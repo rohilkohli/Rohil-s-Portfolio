@@ -1,38 +1,16 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Box, BookOpen, GraduationCap, ChevronRight } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 import { SystemPanel, SectionHeader } from '../Common';
+import { EDUCATION } from '../../data/education';
 
 export const EducationModule = () => {
-  const education = [
-    {
-      degree: "B.Tech (Information Systems)",
-      institution: "BITS Pilani (WILP)",
-      status: "Currently Enrolled",
-      icon: GraduationCap,
-      color: "neon-cyan"
-    },
-    {
-      degree: "Vocational Diploma in IT (Software Development)",
-      institution: "Dayalbagh Educational Institute, Agra",
-      icon: Box,
-      color: "neon-purple"
-    },
-    {
-      degree: "12th (CBSE) | 10th (ICSE)",
-      institution: "S.K.D. Academy | St. Ann’s Convent School",
-      location: "Lucknow",
-      icon: BookOpen,
-      color: "neon-blue"
-    }
-  ];
-
   return (
     <section id="education" className="py-20 px-8 max-w-7xl mx-auto">
       <SectionHeader title="Knowledge Uploads" subtitle="Academic_History // Record_Archive" icon={BookOpen} />
 
       <div className="space-y-6">
-        {education.map((edu, i) => (
+        {EDUCATION.map((edu, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, x: -20 }}
@@ -42,10 +20,10 @@ export const EducationModule = () => {
           >
             <SystemPanel title={`LOG_ENTRY_0${i + 1}`}>
               <div className="flex flex-col md:flex-row md:items-center gap-6">
-                <div className={`p-4 bg-cyber-gray-800 border border-${edu.color}/20 rounded-sm`}>
-                  <edu.icon className={`text-${edu.color}`} size={32} />
+                <div className={`p-4 bg-cyber-gray-800 rounded-sm border ${edu.borderClass}`}>
+                  <edu.icon className={edu.textClass} size={32} />
                 </div>
-                
+
                 <div className="flex-grow">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
                     <h3 className="text-xl font-bold text-white">{edu.degree}</h3>

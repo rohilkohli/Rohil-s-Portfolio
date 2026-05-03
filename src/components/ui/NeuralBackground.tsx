@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useRef } from 'react';
 import { cn } from '../../lib/utils';
 
@@ -33,10 +31,11 @@ export const NeuralBackground: React.FC = () => {
     let height = window.innerHeight;
     let particles: Particle[] = [];
     let animationFrameId: number;
+    let paused = false;
     let mouse = { x: -1000, y: -1000 };
 
     const PARTICLE_COUNT = Math.min(1000, window.innerWidth < 768 ? 500 : 1000);
-    const TRAIL_OPACITY = 0.12; 
+    const TRAIL_OPACITY = 0.12;
     const COLOR = '#00f3ff';
     const SPEED = 0.85;
 
@@ -58,9 +57,9 @@ export const NeuralBackground: React.FC = () => {
       }
 
       update() {
-        // 1. Flow Field Math (Deterministic routing as requested)
+        // 1. Flow Field Math
         const angle = (Math.cos(this.x * 0.005) + Math.sin(this.y * 0.005)) * Math.PI;
-        
+
         // 2. Add force from flow field
         this.vx += Math.cos(angle) * 0.2 * SPEED;
         this.vy += Math.sin(angle) * 0.2 * SPEED;
@@ -69,14 +68,12 @@ export const NeuralBackground: React.FC = () => {
         const dx = mouse.x - this.x;
         const dy = mouse.y - this.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        
+
         if (distance < 100) {
-          // Strong repulsion zone
           const force = (100 - distance) / 100;
           this.vx -= dx * force * 0.15;
           this.vy -= dy * force * 0.15;
         } else if (distance < 250) {
-          // Subtle attraction zone (Enterprise signal routing)
           const force = (250 - distance) / 150;
           this.vx += dx * force * 0.025;
           this.vy += dy * force * 0.025;
@@ -85,7 +82,7 @@ export const NeuralBackground: React.FC = () => {
         // 4. Apply Velocity & Friction
         this.x += this.vx;
         this.y += this.vy;
-        this.vx *= 0.94; // System friction
+        this.vx *= 0.94;
         this.vy *= 0.94;
 
         // 5. Lifecycle Management
@@ -111,10 +108,9 @@ export const NeuralBackground: React.FC = () => {
       }
 
       draw(context: CanvasRenderingContext2D) {
-        // Adaptive opacity based on lifecycle stage
         const alpha = 1 - Math.abs((this.age / this.life) - 0.5) * 2;
         context.fillStyle = COLOR;
-        context.globalAlpha = alpha * 0.6; // Scale down for subtlety
+        context.globalAlpha = alpha * 0.6;
         context.fillRect(this.x, this.y, 1.2, 1.2);
       }
     }
@@ -124,7 +120,7 @@ export const NeuralBackground: React.FC = () => {
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.scale(dpr, dpr);
-      
+
       particles = [];
       for (let i = 0; i < PARTICLE_COUNT; i++) {
         particles.push(new SystemParticle());
@@ -132,9 +128,14 @@ export const NeuralBackground: React.FC = () => {
     };
 
     const animate = () => {
+      if (paused) {
+        animationFrameId = requestAnimationFrame(animate);
+        return;
+      }
+
       // Trail Persistence Layer
       ctx.globalAlpha = 1.0;
-      ctx.fillStyle = `rgba(5, 5, 5, ${TRAIL_OPACITY})`; 
+      ctx.fillStyle = `rgba(5, 5, 5, ${TRAIL_OPACITY})`;
       ctx.fillRect(0, 0, width, height);
 
       particles.forEach((p) => {
@@ -161,17 +162,23 @@ export const NeuralBackground: React.FC = () => {
       mouse.y = -1000;
     };
 
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseleave", handleMouseLeave);
+    const handleVisibilityChange = () => {
+      paused = document.visibilityState === 'hidden';
+    };
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     init();
     animate();
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
@@ -179,6 +186,7 @@ export const NeuralBackground: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
+      style={{ willChange: 'transform' }}
       className="fixed inset-0 z-[5] pointer-events-none select-none bg-[#050505]"
     />
   );

@@ -56,7 +56,7 @@ export const HeroModule = ({ onEnter }: { onEnter: () => void }) => {
               <span>Enter System</span>
             </div>
           </NeonButton>
-          <NeonButton variant="purple" onClick={() => window.open('/resume.pdf', '_blank')}>
+          <NeonButton variant="purple" onClick={() => window.open('/resume.pdf', '_blank')} aria-label="Download Resume (PDF)">
             <div className="flex items-center gap-2">
               <Download size={14} />
               <span>Download Resume</span>

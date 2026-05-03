@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Shield, Server, Box, Globe, Cpu, Award } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { TextEffect } from './ui/text-effect';
+import type { LucideIcon } from 'lucide-react';
 
-export const SectionHeader = ({ title, subtitle, icon: Icon }: { title: string, subtitle?: string, icon: any }) => (
+export const SectionHeader = ({ title, subtitle, icon: Icon }: { title: string, subtitle?: string, icon: LucideIcon }) => (
   <div className="mb-12 relative">
     <div className="absolute -left-4 top-0 w-1 h-full bg-neon-cyan" />
     <div className="flex items-center gap-3 mb-2">
