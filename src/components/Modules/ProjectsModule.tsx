@@ -2,18 +2,28 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ExternalLink, Github, Code2, Terminal } from 'lucide-react';
 import { SystemPanel, SectionHeader } from '../Common';
+import { ScannerCardStream } from '../ui/scanner-card-stream';
 import { PROJECTS } from '../../data/projects';
 
 export const ProjectsModule = () => {
-  return (
-    <section id="projects" className="py-20 px-8 max-w-7xl mx-auto">
-      <SectionHeader
-        title="Active Deployments"
-        subtitle="Project_Logs // System_Builds"
-        icon={Terminal}
-      />
+  const projectImages = PROJECTS.map((p) => p.image);
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+  return (
+    <section id="projects" className="py-20 max-w-7xl mx-auto">
+      <div className="px-8">
+        <SectionHeader
+          title="Active Deployments"
+          subtitle="Project_Logs // System_Builds"
+          icon={Terminal}
+        />
+      </div>
+
+      {/* Scanner card stream showcase */}
+      <div className="mb-12 overflow-hidden">
+        <ScannerCardStream cardImages={projectImages} repeat={8} initialSpeed={100} />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-8">
         {PROJECTS.map((project, i) => (
           <motion.div
             key={project.id}
