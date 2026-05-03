@@ -7,7 +7,15 @@ import { SpecialText } from '../ui/special-text';
 
 export const TransmissionModule = () => {
   const [isEmailHovered, setIsEmailHovered] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const email = "rohilkohli.buisness@gmail.com";
+
+  const handleSlideComplete = () => {
+    const subject = encodeURIComponent(`Transmission from ${formData.name}`);
+    const body = encodeURIComponent(`Origin Entity: ${formData.name}\nSecure Freq Link: ${formData.email}\n\nMission Details:\n${formData.message}`);
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  };
+
   return (
     <section id="contact" className="py-20 px-8 max-w-7xl mx-auto">
       <SectionHeader title="Transmission" subtitle="Protocol_Established // Open_Channel" icon={Globe} />
@@ -88,6 +96,8 @@ export const TransmissionModule = () => {
                 <label className="font-mono text-[9px] text-slate-500 uppercase tracking-widest pl-1">Origin_Entity_ID</label>
                 <input 
                   type="text" 
+                  value={formData.name}
+                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   placeholder="NAME / CORPORATE_IDENTITY"
                   className="w-full bg-cyber-black/50 border border-white/5 px-4 py-3 text-white text-sm font-mono focus:border-neon-cyan outline-none transition-all placeholder:opacity-30"
                 />
@@ -97,6 +107,8 @@ export const TransmissionModule = () => {
                 <label className="font-mono text-[9px] text-slate-500 uppercase tracking-widest pl-1">Secure_Freq_Link</label>
                 <input 
                   type="email" 
+                  value={formData.email}
+                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   placeholder="EMAIL_ADDRESS"
                   className="w-full bg-cyber-black/50 border border-white/5 px-4 py-3 text-white text-sm font-mono focus:border-neon-cyan outline-none transition-all placeholder:opacity-30"
                 />
@@ -106,13 +118,15 @@ export const TransmissionModule = () => {
                 <label className="font-mono text-[9px] text-slate-500 uppercase tracking-widest pl-1">Mission_Details</label>
                 <textarea 
                   rows={4}
+                  value={formData.message}
+                  onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
                   placeholder="MESSAGE_CONTENT_HERE..."
                   className="w-full bg-cyber-black/50 border border-white/5 px-4 py-3 text-white text-sm font-mono focus:border-neon-cyan outline-none transition-all placeholder:opacity-30 resize-none"
                 />
               </div>
 
               <div className="flex justify-center pt-2">
-                <SlideButton className="w-full" />
+                <SlideButton onSlide={handleSlideComplete} className="w-full" />
               </div>
             </div>
             

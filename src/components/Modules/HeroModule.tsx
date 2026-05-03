@@ -56,7 +56,7 @@ export const HeroModule = ({ onEnter }: { onEnter: () => void }) => {
               <span>Enter System</span>
             </div>
           </NeonButton>
-          <NeonButton variant="purple">
+          <NeonButton variant="purple" onClick={() => window.open('/resume.pdf', '_blank')}>
             <div className="flex items-center gap-2">
               <Download size={14} />
               <span>Download Resume</span>
@@ -65,8 +65,8 @@ export const HeroModule = ({ onEnter }: { onEnter: () => void }) => {
         </div>
 
         <div className="flex justify-center gap-6 mt-12 opacity-50">
-          <a href="https://www.linkedin.com/in/rohil-kohli-041022236/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-neon-cyan transition-colors"><Linkedin size={20} /></a>
-          <a href="https://github.com/rohilkohli" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-neon-cyan transition-colors"><Github size={20} /></a>
+          <a href="https://www.linkedin.com/in/rohil-kohli-041022236/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" className="text-slate-400 hover:text-neon-cyan transition-colors"><Linkedin size={20} /></a>
+          <a href="https://github.com/rohilkohli" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" className="text-slate-400 hover:text-neon-cyan transition-colors"><Github size={20} /></a>
         </div>
       </motion.div>
 

@@ -81,8 +81,12 @@ const useButtonStatus = (resolveTo: "success" | "error") => {
   return { status, handleSubmit }
 }
 
-export const SlideButton = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, disabled, ...props }, ref) => {
+interface SlideButtonProps extends ButtonProps {
+  onSlide?: () => void;
+}
+
+export const SlideButton = forwardRef<HTMLButtonElement, SlideButtonProps>(
+  ({ className, disabled, onSlide, ...props }, ref) => {
     const [isDragging, setIsDragging] = useState(false)
     const [completed, setCompleted] = useState(false)
     const dragHandleRef = useRef<HTMLDivElement | null>(null)
@@ -109,6 +113,7 @@ export const SlideButton = forwardRef<HTMLButtonElement, ButtonProps>(
       if (progress >= DRAG_THRESHOLD) {
         setCompleted(true)
         handleSubmit()
+        if (onSlide) onSlide()
       } else {
         dragX.set(0)
       }
