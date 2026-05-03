@@ -39,9 +39,14 @@ export const EducationModule = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 text-[9px] font-mono text-slate-600 uppercase">
-                  <span>TRANSFER_COMPLETE</span>
-                  <div className="w-2 h-2 rounded-full bg-green-500/50 animate-pulse" />
+                <div className="flex flex-col items-end gap-2 shrink-0">
+                  {edu.year && (
+                    <span className="font-mono text-[10px] text-neon-cyan/60 uppercase tracking-tighter whitespace-nowrap">{edu.year}</span>
+                  )}
+                  <div className="flex items-center gap-2 text-[9px] font-mono text-slate-600 uppercase">
+                    <span>TRANSFER_COMPLETE</span>
+                    <div className="w-2 h-2 rounded-full bg-green-500/50 animate-pulse" />
+                  </div>
                 </div>
               </div>
             </SystemPanel>

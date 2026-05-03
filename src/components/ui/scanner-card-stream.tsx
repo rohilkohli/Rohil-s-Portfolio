@@ -130,7 +130,18 @@ export const ScannerCardStream = ({
     cards.forEach((card) => originalAscii.current.set(card.id, card.ascii));
 
     let animationFrameId: number;
-    const containerW = container.offsetWidth || window.innerWidth;
+    let containerW = container.offsetWidth || window.innerWidth;
+
+    const resizeRenderer = () => {
+      containerW = container.offsetWidth || window.innerWidth;
+      renderer.setSize(containerW, 250);
+      camera.left = -containerW / 2;
+      camera.right = containerW / 2;
+      camera.updateProjectionMatrix();
+      scannerCanvas.width = containerW;
+    };
+
+    const resizeObserver = new ResizeObserver(resizeRenderer);
 
     // ── Three.js particle background ─────────────────────────────────────────
     const scene = new THREE.Scene();
@@ -399,9 +410,11 @@ export const ScannerCardStream = ({
     };
 
     animationFrameId = requestAnimationFrame(animate);
+    resizeObserver.observe(container);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
+      resizeObserver.disconnect();
       renderer.dispose();
       geometry.dispose();
       material.dispose();

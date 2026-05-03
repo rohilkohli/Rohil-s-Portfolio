@@ -30,6 +30,7 @@ export default function App() {
   const [entered, setEntered] = useState(false);
   const [activeModule, setActiveModule] = useState('HERO');
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [showContent, setShowContent] = useState(false);
 
   const handleBootComplete = () => {
     sessionStorage.setItem(BOOT_SESSION_KEY, '1');
@@ -62,7 +63,9 @@ export default function App() {
       if (window.scrollY < 300) {
         setActiveModule('HERO');
       }
-
+      if (window.scrollY > 100) {
+        setShowContent(true);
+      }
       setShowScrollTop(window.scrollY > 500);
     };
 
@@ -85,7 +88,7 @@ export default function App() {
             <HeroModule onEnter={handleEnterSystem} />
 
             <AnimatePresence>
-              {(entered || window.scrollY > 100) && (
+              {(entered || showContent) && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

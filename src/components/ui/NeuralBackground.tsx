@@ -26,6 +26,14 @@ export const NeuralBackground: React.FC = () => {
     const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx) return;
 
+    // Respect prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      // Render a static dark gradient instead of animated particles
+      canvas.style.background = 'linear-gradient(135deg, #050505 0%, #0a0a0a 100%)';
+      return;
+    }
+
     // --- CONFIGURATION (SYSTEM.LOG THEME) ---
     let width = window.innerWidth;
     let height = window.innerHeight;

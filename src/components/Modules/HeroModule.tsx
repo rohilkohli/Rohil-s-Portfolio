@@ -65,8 +65,8 @@ export const HeroModule = ({ onEnter }: { onEnter: () => void }) => {
         </div>
 
         <div className="flex justify-center gap-6 mt-12 opacity-50">
-          <a href="https://www.linkedin.com/in/rohil-kohli-041022236/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" className="text-slate-400 hover:text-neon-cyan transition-colors"><Linkedin size={20} /></a>
-          <a href="https://github.com/rohilkohli" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" className="text-slate-400 hover:text-neon-cyan transition-colors"><Github size={20} /></a>
+          <a href="https://www.linkedin.com/in/rohil-kohli-041022236/" target="_blank" rel="noopener noreferrer me" aria-label="LinkedIn Profile — Rohil Kohli" className="text-slate-400 hover:text-neon-cyan transition-colors"><Linkedin size={20} /></a>
+          <a href="https://github.com/rohilkohli" target="_blank" rel="noopener noreferrer me" aria-label="GitHub Profile — rohilkohli" className="text-slate-400 hover:text-neon-cyan transition-colors"><Github size={20} /></a>
         </div>
       </motion.div>
 

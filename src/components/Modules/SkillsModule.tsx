@@ -45,6 +45,22 @@ export const SkillsModule = () => {
                   <span className="text-white/20">L3_OPERATIONAL</span>
                   <span className={skill.level > 80 ? "text-white" : ""}>L5_EXPERT</span>
                 </div>
+
+                {/* Tool breakdown */}
+                <div className="pt-3 border-t border-white/5">
+                  <div className="font-mono text-[9px] text-slate-600 uppercase mb-2 tracking-widest">TOOLS_LOADED</div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {skill.tools.map((tool) => (
+                      <span
+                        key={tool}
+                        className={`px-2 py-0.5 text-[9px] font-mono uppercase border rounded-[2px] transition-all duration-200
+                          border-white/10 text-slate-500 hover:${skill.borderClass ?? 'border-white/20'} hover:${skill.textClass} hover:bg-white/5 cursor-default`}
+                      >
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
             </SystemPanel>
           </motion.div>

@@ -143,7 +143,7 @@ export const SystemShell = ({ children, activeModule }: { children: React.ReactN
       <footer className="fixed bottom-0 left-0 w-full h-8 bg-cyber-gray-900 border-t border-white/5 z-50 flex items-center justify-between px-8 font-mono text-[9px] uppercase tracking-wider text-slate-500">
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1 text-neon-cyan"><div className="w-1 h-1 bg-neon-cyan" /> L2_ENDPOINT_SECURE</span>
-          <span className="hidden sm:inline opacity-50">|| IP: 192.168.1.101</span>
+          <span className="hidden sm:inline opacity-50">|| REGION: IN_NEW_DELHI</span>
         </div>
         <div className="flex items-center gap-4">
           <span>SLA_COMPLIANT: 100%</span>
