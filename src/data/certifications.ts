@@ -15,7 +15,7 @@ export const CERTIFICATIONS: Certification[] = [
     issuer: 'Google Cloud',
     image: '/Arcade Base Camp April 2026.png',
     date: 'April 2026',
-    link: '',
+    link: 'https://www.skills.google/public_profiles/5ed2b771-8904-4d48-9aee-0c387ea1cf1b/badges/23768690',
   },
   {
     id: 'badge-02',

@@ -54,7 +54,7 @@ export const SkillsModule = () => {
                       <span
                         key={tool}
                         className={`px-2 py-0.5 text-[9px] font-mono uppercase border rounded-[2px] transition-all duration-200
-                          border-white/10 text-slate-500 hover:${skill.borderClass ?? 'border-white/20'} hover:${skill.textClass} hover:bg-white/5 cursor-default`}
+                          border-white/10 text-slate-500 hover:${skill.textClass.replace('text-', 'border-')} hover:${skill.textClass} hover:bg-white/5 cursor-default`}
                       >
                         {tool}
                       </span>

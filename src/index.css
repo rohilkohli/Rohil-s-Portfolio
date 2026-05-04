@@ -15,8 +15,12 @@
   --color-cyber-gray-800: #121212;
   --color-cyber-gray-700: #1a1a1a;
 
-  --animate-highlight: highlight 0.6s ease forwards;
-  --animate-flash: flash 0.6s ease forwards;
+  --animate-shimmer: shimmer 2s linear infinite;
+  
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
 
   @keyframes highlight {
     0% { background-color: transparent; }
@@ -96,7 +100,7 @@
   .glitch-text::before {
     left: 2px;
     text-shadow: -2px 0 #ff00c1;
-    clip: rect(44px, 450px, 56px, 0);
+    clip-path: inset(44px 0 calc(100% - 56px) 0);
     animation: glitch-anim 5s infinite linear alternate-reverse;
   }
 

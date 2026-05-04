@@ -21,7 +21,7 @@ export const PROJECTS: Project[] = [
     link: 'https://election-guide-196220787717.us-central1.run.app/',
     github: 'https://github.com/rohilkohli/Election-Guide.git',
     type: 'AI Intelligence',
-    image: 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=400&h=250&fit=crop',
+    image: '/projects/election-guide.png',
   },
   {
     id: 'proj-02',
@@ -31,7 +31,7 @@ export const PROJECTS: Project[] = [
     link: 'https://www.shidstyle.com/',
     github: 'https://github.com/rohilkohli/shids-style',
     type: 'E-Commerce',
-    image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=400&h=250&fit=crop',
+    image: '/projects/shids-style.png',
   },
   {
     id: 'proj-03',

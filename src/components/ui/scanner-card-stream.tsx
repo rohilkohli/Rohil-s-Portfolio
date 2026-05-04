@@ -358,7 +358,11 @@ export const ScannerCardStream = ({
         }
         cardStreamState.current.position +=
           cardStreamState.current.velocity * cardStreamState.current.direction * deltaTime;
-        setSpeed(Math.round(cardStreamState.current.velocity));
+        
+        // Performance: Only update React state if showSpeed is enabled and velocity changed significantly
+        if (showSpeed && Math.round(cardStreamState.current.velocity) !== speed) {
+          setSpeed(Math.round(cardStreamState.current.velocity));
+        }
       }
 
       const baseWidth = (cardImages?.length || 0) * (400 + cardGap);
