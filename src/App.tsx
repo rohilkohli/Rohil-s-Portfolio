@@ -19,6 +19,7 @@ import { TransmissionModule } from './components/Modules/TransmissionModule';
 import { ScrollReveal } from './components/Common/ScrollReveal';
 import { ChevronUp, User, Cpu, Server, Award, BookOpen, Globe, ShieldCheck, Terminal } from 'lucide-react';
 import { cn } from './lib/utils';
+import { SEO } from './components/Common/SEO';
 
 const BOOT_SESSION_KEY = 'system_log_booted';
 
@@ -75,6 +76,11 @@ export default function App() {
 
   return (
     <>
+      <SEO
+        title="Rohil Portfolio | UI/UX Designer & Full-Stack Engineer"
+        description="Interactive portfolio featuring premium UI/UX craft, full-stack systems architecture, and real-time 3D experiences."
+        ogImage="/images/og/portfolio-cover.webp"
+      />
       <NeuralBackground />
       <AnimatePresence>
         {booting && (
